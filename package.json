@@ -1,0 +1,22 @@
+{
+  "name": "icescrum",
+  "version": "0.0.1",
+  "description": "iceScrum API wrapper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:fpap/node-icescrum.git"
+  },
+  "keywords": [
+    "iceScrum"
+  ],
+  "author": "Fernando Pap <fpap@sursoftware.com.ar>",
+  "license": "GPL-v2",
+  "bugs": {
+    "url": "https://github.com/fpap/node-icescrum/issues"
+  },
+  "readmeFilename": "README.md"
+}
