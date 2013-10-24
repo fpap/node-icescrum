@@ -7,7 +7,7 @@ var sys = require("sys")
 
 
 var params = {
-        hostname: '192.168.1.10'
+        hostname: '192.168.1.151'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -22,7 +22,7 @@ wrapper.getStory(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.10'
+        hostname: '192.168.1.151'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -37,21 +37,25 @@ wrapper.getAllStories(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.10'
+        hostname: '192.168.1.151'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
-        ,story: 760
+        ,story: 750
         ,auth: 'fpap:1234'
-        ,name: 'nombre0'
+        ,name: 'notags'
         ,type: 0
-        ,description: 'descripcion0'
-        ,notes: 'notes0'
-        ,textAs: 'textAs0'
-        ,textICan: 'textICan0'
-        ,textTo: 'textTo0'
+        ,description: 'notags'
+        ,notes: 'notags'
+        ,textAs: 'notags'
+        ,textICan: 'notags'
+        ,textTo: 'notags'
         ,featureId: 91
-        ,sprintId: 91
+        ,sprintId: 321
+        ,rank: 1
+        ,effort: 5
+        ,dependsOnId: 0
+        ,tags: 'notags' // Currently not working
     };
 
 wrapper.updateStory(params, function(err, result){
@@ -59,28 +63,28 @@ wrapper.updateStory(params, function(err, result){
 	console.log("RESPUESTA "+result);
 });
 
-/*
-var req = http.request(options, function(res) {
-	  console.log('STATUS: ' + res.statusCode);
-	  console.log('HEADERS: ' + JSON.stringify(res.headers));
-	  res.setEncoding('utf8');
-	  res.on('data', function (chunk) {
-	    console.log('BODY: ' + chunk);
-	  });
-	});
-*/
 
-/*
-request.addListener("response", function(response) {
-  sys.puts("STATUS: " + response.statusCode);
-  sys.puts("HEADERS: " + JSON.stringify(response.headers));
-  response.setEncoding("UTF8");
-  response.addListener("data", function(chunk) {
-    sys.puts("BODY: " + chunk);
-  });
-  response.addListener("end", function() {
-    sys.puts("Fin de la respuesta");
-  });
+
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,auth: 'fpap:1234'
+        ,name: 'withsometags'
+        ,type: 2
+        ,description: 'withtags'
+        ,notes: 'withtags'
+        ,textAs: 'withtags'
+        ,textICan: 'withtags'
+        ,textTo: 'withtags'
+        ,featureId: 91
+        ,dependsOnId: 752
+        ,tags: 'with,some tags' // Currently not working
+    };
+
+wrapper.createStory(params, function(err, result){
+    sys.puts("API Create a story");
+    console.log("RESPUESTA "+result);
 });
-*/
 
