@@ -5,7 +5,7 @@
 var sys = require("sys")
     ,wrapper = require('./index');
 
-
+/*
 var params = {
         hostname: '192.168.1.151'
         ,port: 48080
@@ -80,7 +80,7 @@ var params = {
         ,textTo: 'withtags'
         ,featureId: 91
         ,dependsOnId: 752
-        ,tags: 'with,some tags' // Currently not working
+        ,tags: 'with,some tags'
     };
 
 wrapper.createStory(params, function(err, result){
@@ -88,3 +88,97 @@ wrapper.createStory(params, function(err, result){
     console.log("RESPUESTA "+result);
 });
 
+
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 881
+        ,auth: 'fpap:1234'
+        ,type: 'story'
+    };
+
+wrapper.acceptStory(params, function(err, result){
+    sys.puts("API Accept a story");
+    console.log("RESPUESTA "+result);
+});*/
+
+/*
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 753
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.setStoryDone(params, function(err, result){
+    sys.puts("API Set a story to done");
+    console.log("RESPUESTA "+result);
+});
+*/
+
+/*
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 883
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.setStoryUndone(params, function(err, result){
+    sys.puts("API Set a story to undone");
+    console.log("RESPUESTA "+result);
+});*/
+
+/*
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 752
+        ,auth: 'fpap:1234'
+        ,sprintId: 321
+    };
+
+wrapper.planStory(params, function(err, result){
+    sys.puts("API Plan a story in a sprint");
+    console.log("RESPUESTA "+result);
+});
+*/
+
+/*
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 752
+        ,auth: 'fpap:1234'
+        ,shiftToNext: true
+    };
+
+wrapper.unplanStory(params, function(err, result){
+    sys.puts("API Unplan a story");
+    console.log("RESPUESTA "+result);
+});
+*/
+
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 881
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.deleteStory(params, function(err, result){
+    sys.puts("API Delete a story");
+    console.log("RESPUESTA "+result);
+});
