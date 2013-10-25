@@ -4,7 +4,7 @@ var http = require("http");
 var icescrum = {};
     
 /**
- * Gets an story.
+ * Gets a story.
  *
  * @method getStory.
  * @param {number} story: Required story's id.
@@ -76,8 +76,8 @@ icescrum.getStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk == '{"error":"Story does not exist"}') {
-                callback(true, 'Story does not exist');
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
             else {
@@ -89,7 +89,6 @@ icescrum.getStory = function(params, callback) {
   
     req.end();
 };
-
 
 /**
  * Gets all the stories of a project.
@@ -158,8 +157,8 @@ icescrum.getAllStories = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk == '{"error":"Story does not exist"}') {
-                callback(true, 'Story does not exist');
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
             else {
@@ -172,12 +171,11 @@ icescrum.getAllStories = function(params, callback) {
     req.end();
 };
 
-
 /**
- * Updates an story.
+ * Updates a story.
  *
  * @method updateStory.
- * @param {number} story: Required story's id.
+ * @param {number} story: Story's id to update.
  * @param {string} hostname: Icescrum's server's host name.
  * @param {number} port: Icescrum's server's port.
  * @param {string} path: Icescrum's server's path.
@@ -404,8 +402,118 @@ icescrum.updateStory = function(params, callback) {
     req.end();
 };
 
+
 /**
- * Creates an story.
+ * Accepts a story.
+ *
+ * @method acceptStory.
+ * @param {number} story: Story's id to accept.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @param {string} type: New story's type. One of feature, story, task.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, accepted story. Example:
+ *       {
+ *         "id":750,
+ *         "acceptanceTests":[],
+ *         "acceptedDate":"2013-10-16T14:40:54Z",
+ *         "actor":null,
+ *         "affectVersion":null,
+ *         "creationDate":"2013-10-16T14:40:47Z",
+ *         "creator":{"id":34},
+ *         "dependsOn":null,
+ *         "description":"Test description",
+ *         "doneDate":null,
+ *         "effort":null,
+ *         "estimatedDate":null,
+ *         "executionFrequency":1,
+ *         "feature":null,
+ *         "inProgressDate":null,
+ *         "lastUpdated":"2013-10-16T14:40:54Z",
+ *         "name":"Test",
+ *         "notes":null,
+ *         "parentSprint":null,
+ *         "plannedDate":null,
+ *         "rank":1,
+ *         "state":2,
+ *         "suggestedDate":"2013-10-16T14:40:47Z",
+ *         "tasks":[],
+ *         "textAs":null,
+ *         "textICan":null,
+ *         "textTo":null,
+ *         "type":0,
+ *         "uid":1,
+ *         "tags":[],
+ *         "dependences":[]
+ *       }
+ */
+icescrum.acceptStory = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var type = "";
+    if (typeof params.type !== 'undefined' && params.type !== null) {
+        if (params.type == 'feature' || params.type == 'story' || params.type == 'task')
+            type = "'type': "+params.type;
+        else {
+            callback(true, 'Invalid type');
+            return(this);
+        }
+    }
+    else {
+        callback(true, 'Undefined type');
+        return(this);
+    }
+    
+    var data = "{"+type+"}"
+    ,options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story+'/accept';
+    options.auth = params.auth;
+    options.method = 'POST';
+    options.headers = {
+            'content-type': 'application/json'
+            ,'Content-Length': Buffer.byteLength(data)
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+
+    req.write(data, 'utf8');
+    req.end();
+};
+
+
+
+/**
+ * Creates a story.
  *
  * @method createStory.
  * @param {string} hostname: Icescrum's server's host name.
@@ -575,5 +683,468 @@ icescrum.createStory = function(params, callback) {
     req.write(data, 'utf8');
     req.end();
 };
+
+
+/**
+ * Sets a story to done.
+ *
+ * @method setStoryDone.
+ * @param {number} story: Story's id to set to done.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, story set to done. Example:
+ *       {
+ *         "id":750,
+ *         "acceptanceTests":[],
+ *         "acceptedDate":"2013-10-16T14:40:54Z",
+ *         "actor":null,
+ *         "affectVersion":null,
+ *         "creationDate":"2013-10-16T14:40:47Z",
+ *         "creator":{"id":34},
+ *         "dependsOn":null,
+ *         "description":"Test description",
+ *         "doneDate":null,
+ *         "effort":null,
+ *         "estimatedDate":null,
+ *         "executionFrequency":1,
+ *         "feature":null,
+ *         "inProgressDate":null,
+ *         "lastUpdated":"2013-10-16T14:40:54Z",
+ *         "name":"Test",
+ *         "notes":null,
+ *         "parentSprint":null,
+ *         "plannedDate":null,
+ *         "rank":1,
+ *         "state":2,
+ *         "suggestedDate":"2013-10-16T14:40:47Z",
+ *         "tasks":[],
+ *         "textAs":null,
+ *         "textICan":null,
+ *         "textTo":null,
+ *         "type":0,
+ *         "uid":1,
+ *         "tags":[],
+ *         "dependences":[]
+ *       }
+ */
+icescrum.setStoryDone = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story+'/done';
+    options.auth = params.auth;
+    options.method = 'POST';
+    options.headers = {
+            'content-type': 'application/json'
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+  
+    req.end();
+};
+
+
+/**
+ * Sets a story to undone.
+ *
+ * @method setStoryUndone.
+ * @param {number} story: Story's id to set to undone.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, story set to undone. Example:
+ *       {
+ *         "id":750,
+ *         "acceptanceTests":[],
+ *         "acceptedDate":"2013-10-16T14:40:54Z",
+ *         "actor":null,
+ *         "affectVersion":null,
+ *         "creationDate":"2013-10-16T14:40:47Z",
+ *         "creator":{"id":34},
+ *         "dependsOn":null,
+ *         "description":"Test description",
+ *         "doneDate":null,
+ *         "effort":null,
+ *         "estimatedDate":null,
+ *         "executionFrequency":1,
+ *         "feature":null,
+ *         "inProgressDate":null,
+ *         "lastUpdated":"2013-10-16T14:40:54Z",
+ *         "name":"Test",
+ *         "notes":null,
+ *         "parentSprint":null,
+ *         "plannedDate":null,
+ *         "rank":1,
+ *         "state":2,
+ *         "suggestedDate":"2013-10-16T14:40:47Z",
+ *         "tasks":[],
+ *         "textAs":null,
+ *         "textICan":null,
+ *         "textTo":null,
+ *         "type":0,
+ *         "uid":1,
+ *         "tags":[],
+ *         "dependences":[]
+ *       }
+ */
+icescrum.setStoryUndone = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story+'/unDone';
+    options.auth = params.auth;
+    options.method = 'POST';
+    options.headers = {
+            'content-type': 'application/json'
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+  
+    req.end();
+};
+
+
+
+/**
+ * Plans a story in a sprint.
+ *
+ * @method planStory.
+ * @param {number} story: Story's id to set to plan in a sprint.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @param {number} sprintId: New story's sprint id.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, story planned in a sprint. Example:
+ *       {
+ *         "id":750,
+ *         "acceptanceTests":[],
+ *         "acceptedDate":"2013-10-16T14:40:54Z",
+ *         "actor":null,
+ *         "affectVersion":null,
+ *         "creationDate":"2013-10-16T14:40:47Z",
+ *         "creator":{"id":34},
+ *         "dependsOn":null,
+ *         "description":"Test description",
+ *         "doneDate":null,
+ *         "effort":null,
+ *         "estimatedDate":null,
+ *         "executionFrequency":1,
+ *         "feature":null,
+ *         "inProgressDate":null,
+ *         "lastUpdated":"2013-10-16T14:40:54Z",
+ *         "name":"Test",
+ *         "notes":null,
+ *         "parentSprint":null,
+ *         "plannedDate":null,
+ *         "rank":1,
+ *         "state":2,
+ *         "suggestedDate":"2013-10-16T14:40:47Z",
+ *         "tasks":[],
+ *         "textAs":null,
+ *         "textICan":null,
+ *         "textTo":null,
+ *         "type":0,
+ *         "uid":1,
+ *         "tags":[],
+ *         "dependences":[]
+ *       }
+ */
+icescrum.planStory = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var sprintId = "";
+    if (params.sprintId !== parseInt(params.sprintId, 10)) {
+        callback(true, 'Undefined sprint');
+        return(this);
+    }
+    else {
+        if (params.sprintId < 0) {
+            callback(true, 'Invalid sprint');
+            return(this);
+        }
+        else sprintId = "id: "+params.sprintId;
+    }
+
+    var data = "{sprint: {"+sprintId+"}}"
+    ,options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story+'/plan';
+    options.auth = params.auth;
+    options.method = 'POST';
+    options.headers = {
+            'content-type': 'application/json'
+            ,'Content-Length': Buffer.byteLength(data)
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+
+    req.write(data, 'utf8');
+    req.end();
+};
+
+
+
+/**
+ * Unplans a story.
+ *
+ * @method planStory.
+ * @param {number} story: Story's id to set to plan in a sprint.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @param {boolean} shiftToNext: (optional) If true, the story is shifted to the next sprint.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, story unplanned. Example:
+ *       {
+ *         "id":750,
+ *         "acceptanceTests":[],
+ *         "acceptedDate":"2013-10-16T14:40:54Z",
+ *         "actor":null,
+ *         "affectVersion":null,
+ *         "creationDate":"2013-10-16T14:40:47Z",
+ *         "creator":{"id":34},
+ *         "dependsOn":null,
+ *         "description":"Test description",
+ *         "doneDate":null,
+ *         "effort":null,
+ *         "estimatedDate":null,
+ *         "executionFrequency":1,
+ *         "feature":null,
+ *         "inProgressDate":null,
+ *         "lastUpdated":"2013-10-16T14:40:54Z",
+ *         "name":"Test",
+ *         "notes":null,
+ *         "parentSprint":null,
+ *         "plannedDate":null,
+ *         "rank":1,
+ *         "state":2,
+ *         "suggestedDate":"2013-10-16T14:40:47Z",
+ *         "tasks":[],
+ *         "textAs":null,
+ *         "textICan":null,
+ *         "textTo":null,
+ *         "type":0,
+ *         "uid":1,
+ *         "tags":[],
+ *         "dependences":[]
+ *       }
+ */
+icescrum.unplanStory = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var shiftToNext = false;
+    if (typeof params.shiftToNext !== 'undefined' && params.shiftToNext !== null) {
+        if (params.shiftToNext !== true && params.shiftToNext !== false){
+            callback(true, 'Invalid shiftToNext');
+            return(this);
+        }
+    }
+    
+    shiftToNext = params.shiftToNext;
+
+    if (shiftToNext)
+        var data = "{shiftToNext: "+shiftToNext+"}";
+    var options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story+'/unPlan';
+    options.auth = params.auth;
+    options.method = 'GET';
+    if (shiftToNext) {
+        options.headers = {
+                'content-type': 'application/json'
+                ,'Content-Length': Buffer.byteLength(data)
+        };  
+    }
+    else {
+        options.headers = {
+                'content-type': 'application/json'
+        };  
+    }
+
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+
+    if (shiftToNext)
+        req.write(data, 'utf8');
+    req.end();
+};
+
+
+/**
+ * Deletes a story.
+ *
+ * @method deleteStory.
+ * @param {number} story: Story's id to delete.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, deleted story's id.
+ */
+icescrum.deleteStory = function(params, callback) {
+    if (params.story !== parseInt(params.story, 10)) {
+        callback(true, 'Undefined story');
+        return(this);
+    }
+    else {
+        if (params.story < 0) {
+            callback(true, 'Invalid story');
+            return(this);
+        }
+    }
+    
+    var options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story;
+    options.auth = params.auth;
+    options.method = 'DELETE';
+    options.headers = {
+            'content-type': 'application/json'
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else { //TODO: When deletes the story successfully, it does not return the id
+                callback(false, params.story);
+                return(this);
+            }
+        });
+    });
+  
+    req.end();
+};
+
+
+
 
 module.exports = icescrum;
