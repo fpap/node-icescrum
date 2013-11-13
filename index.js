@@ -155,6 +155,7 @@ icescrum.getAllStories = function(params, callback) {
     };
 
     var req = http.request(options, function(result) {
+        var responseParts = [];
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(2,5) == "error") {
@@ -162,9 +163,13 @@ icescrum.getAllStories = function(params, callback) {
                 return(this);
             }
             else {
-                callback(false, chunk);
-                return(this);
+                responseParts.push(chunk);
             }
+        });
+        
+        result.on("end", function(){
+            callback(false, responseParts.join(""));
+            return(this);
         });
     });
   
