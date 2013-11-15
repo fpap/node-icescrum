@@ -2,7 +2,9 @@
 var http = require("http");
 
 var icescrum = {};
-    
+
+/* Story API */
+
 /**
  * Gets a story.
  *
@@ -156,19 +158,33 @@ icescrum.getAllStories = function(params, callback) {
 
     var req = http.request(options, function(result) {
         var responseParts = [];
+        var error = false;
+        var errorMsg = "";
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                error = true;
+                errorMsg = chunk.substr(10,chunk.length - 12);
+                //callback(true, chunk.substr(10,chunk.length - 12));
+                //return(this);
+            } else if (chunk.substr(0,15) == "<!DOCTYPE html>") {
+                error = true;
+                errorMsg = chunk;
+                //callback(true, chunk);
+                //return(this);
             }
             else {
-                responseParts.push(chunk);
+                if (!error)
+                    responseParts.push(chunk);
             }
         });
         
         result.on("end", function(){
-            callback(false, responseParts.join(""));
+            if (!error) {
+                callback(false, responseParts.join(""));
+            } else {
+                callback(true, errorMsg);
+            }
             return(this);
         });
     });
@@ -1149,7 +1165,156 @@ icescrum.deleteStory = function(params, callback) {
     req.end();
 };
 
+/* END of Story API */
 
+
+
+
+/* Feature API */
+
+/**
+* Get a feature
+*
+* GET http://:server/ws/p/:pkey/feature/:id
+*
+* @method getFeature.
+* @param {number} feature: Feature's id to get.
+* @return {object} Returns by callback's function:
+*   First value {boolean}: error.
+*   Second value {string}:
+*     If first value == true, error's description.
+*     If first value == false, get feature's id.
+*/
+icescrum.getFeature = function(params, callback) {
+    if (params.feature !== parseInt(params.feature, 10)) {
+        callback(true, 'Undefined feature');
+        return(this);
+    }
+    else {
+        if (params.feature < 0) {
+            callback(true, 'Invalid feature');
+            return(this);
+        }
+    }
+   
+    var options = {};
+    console.log("Parametros recibidos: \n"+params);
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/feature/'+params.feature;
+    options.auth = params.auth;
+    options.method = 'GET';
+    options.headers = {
+            'content-type': 'application/json'
+    };
+
+    var req = http.request(options, function(result) {
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                callback(true, chunk.substr(10,chunk.length - 12));
+                return(this);
+            }
+            else {
+                callback(false, chunk);
+                return(this);
+            }
+        });
+    });
+ 
+    req.end();
+};
+
+
+/**
+ * Gets all the features of a project.
+ *
+ * @method getAllFeatures.
+ * @param {string} hostname: Icescrum's server's host name.
+ * @param {number} port: Icescrum's server's port.
+ * @param {string} path: Icescrum's server's path.
+ * @param {string} project: Icescrum's project's key.
+ * @param {string} auth: Authentication in format user:password.
+ * @return {object} Returns by callback's function:
+ *   First value {boolean}: error.
+ *   Second value {string}:
+ *     If first value == true, error's description.
+ *     If first value == false, required features. Example:
+ *       [
+ *          {
+ *            "uid": 1,
+ *            "id": 53,
+ *            "creationDate": "2012-06-01T15:29:36Z",
+ *            "rank": 1,
+ *            "stories": [
+ *                {"id": 2107},
+ *                {"id": 2127},
+ *                {"id": 2147},
+ *                {"id": 2167},
+ *                {"id": 2119}
+ *            ],
+ *            "color": "blue",
+ *            "description": "Une feature",
+ *            "name": "La feature",
+ *            "value": 1,
+ *            "lastUpdated": "2012-06-01T15:29:36Z",
+ *            "type": 0,
+ *            "notes": null,
+ *            "tags": []
+ *        }
+ *        ,{...}
+ *        ,...
+ *       ]
+ */
+icescrum.getAllFeatures = function(params, callback) {
+    var options = {};
+    
+    options.hostname = params.hostname;
+    options.port = params.port;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/feature/';
+    options.auth = params.auth;
+    options.method = 'GET';
+    options.headers = {
+            'content-type': 'application/json'
+    };
+
+    var req = http.request(options, function(result) {
+        var responseParts = [];
+        var error = false;
+        var errorMsg = "";
+        result.setEncoding('utf8');
+        result.on('data', function (chunk) {
+            if (chunk.substr(2,5) == "error") {
+                error = true;
+                errorMsg = chunk.substr(10,chunk.length - 12);
+                //callback(true, chunk.substr(10,chunk.length - 12));
+                //return(this);
+            } else if (chunk.substr(0,15) == "<!DOCTYPE html>") {
+                error = true;
+                errorMsg = chunk;
+                //callback(true, chunk);
+                //return(this);
+            }
+            else {
+                if (!error)
+                    responseParts.push(chunk);
+            }
+        });
+        
+        result.on("end", function(){
+            if (!error) {
+                callback(false, responseParts.join(""));
+            } else {
+                callback(true, errorMsg);
+            }
+            return(this);
+        });
+    });
+  
+    req.end();
+};
+
+/* END of Feature API */
 
 
 module.exports = icescrum;

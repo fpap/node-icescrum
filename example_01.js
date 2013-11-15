@@ -167,7 +167,7 @@ wrapper.unplanStory(params, function(err, result){
     sys.puts("API Unplan a story");
     console.log("RESPUESTA "+result);
 });
-*/
+
 
 var params = {
         hostname: '192.168.1.151'
@@ -180,5 +180,34 @@ var params = {
 
 wrapper.deleteStory(params, function(err, result){
     sys.puts("API Delete a story");
+    console.log("RESPUESTA "+result);
+}); */
+
+
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,feature: 91
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.getFeature(params, function(err, result){
+    sys.puts("API Get a feature.");
+    console.log("RESPUESTA "+result);
+});
+
+
+var params = {
+        hostname: '192.168.1.151'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.getAllFeatures(params, function(err, result){
+    sys.puts("API Get all features");
     console.log("RESPUESTA "+result);
 });
