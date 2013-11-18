@@ -55,7 +55,7 @@ var params = {
         ,rank: 1
         ,effort: 5
         ,dependsOnId: 0
-        ,tags: 'notags' // Currently not working
+        ,tags: "['ticket']" // Currently not working
     };
 
 wrapper.updateStory(params, function(err, result){
@@ -80,7 +80,7 @@ var params = {
         ,textTo: 'withtags'
         ,featureId: 91
         ,dependsOnId: 752
-        ,tags: 'with,some tags'
+        ,tags: "['with','some','tags']"
     };
 
 wrapper.createStory(params, function(err, result){

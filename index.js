@@ -78,7 +78,7 @@ icescrum.getStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -162,7 +162,7 @@ icescrum.getAllStories = function(params, callback) {
         var errorMsg = "";
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
                 //callback(true, chunk.substr(10,chunk.length - 12));
@@ -390,7 +390,7 @@ icescrum.updateStory = function(params, callback) {
     // TODO: Fix. Currently not working.
     var tags = "";
     if (typeof params.tags !== 'undefined' && params.tags !== null)
-        tags = "tags: ['"+params.tags+"'],";
+        tags = "tags: "+params.tags+",";
 
     var data = "{story: {"+name+type+description+notes+textAs+textICan+textTo+featureId+sprintId+rank+effort+dependsOnId+tags+"}}"
     ,options = {};
@@ -408,7 +408,7 @@ icescrum.updateStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -516,7 +516,7 @@ icescrum.acceptStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -672,7 +672,7 @@ icescrum.createStory = function(params, callback) {
     
     var tags = "";
     if (typeof params.tags !== 'undefined' && params.tags !== null)
-        tags = "tags: ['"+params.tags+"'],";
+        tags = "tags: "+params.tags+",";
 
     var data = "{story: {"+name+type+description+notes+textAs+textICan+textTo+featureId+dependsOnId+tags+"}}"
     ,options = {};
@@ -690,7 +690,7 @@ icescrum.createStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -781,7 +781,7 @@ icescrum.setStoryDone = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -871,7 +871,7 @@ icescrum.setStoryUndone = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -978,7 +978,7 @@ icescrum.planStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -1092,7 +1092,7 @@ icescrum.unplanStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -1151,7 +1151,7 @@ icescrum.deleteStory = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -1211,7 +1211,7 @@ icescrum.getFeature = function(params, callback) {
     var req = http.request(options, function(result) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 callback(true, chunk.substr(10,chunk.length - 12));
                 return(this);
             }
@@ -1284,7 +1284,7 @@ icescrum.getAllFeatures = function(params, callback) {
         var errorMsg = "";
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
-            if (chunk.substr(2,5) == "error") {
+            if (chunk.substr(3,5) == "error") {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
                 //callback(true, chunk.substr(10,chunk.length - 12));
