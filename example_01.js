@@ -7,7 +7,7 @@ var sys = require("sys")
 
 /*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -22,7 +22,7 @@ wrapper.getStory(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -37,7 +37,7 @@ wrapper.getAllStories(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -66,7 +66,7 @@ wrapper.updateStory(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -90,7 +90,7 @@ wrapper.createStory(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -106,7 +106,7 @@ wrapper.acceptStory(params, function(err, result){
 
 /*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -122,7 +122,7 @@ wrapper.setStoryDone(params, function(err, result){
 
 /*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -137,7 +137,7 @@ wrapper.setStoryUndone(params, function(err, result){
 
 /*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -154,7 +154,7 @@ wrapper.planStory(params, function(err, result){
 
 /*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -170,7 +170,7 @@ wrapper.unplanStory(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -183,9 +183,9 @@ wrapper.deleteStory(params, function(err, result){
     console.log("RESPUESTA "+result);
 }); */
 
-
+/*
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -200,7 +200,7 @@ wrapper.getFeature(params, function(err, result){
 
 
 var params = {
-        hostname: '192.168.1.151'
+        hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
@@ -209,5 +209,35 @@ var params = {
 
 wrapper.getAllFeatures(params, function(err, result){
     sys.puts("API Get all features");
+    console.log("RESPUESTA "+result);
+});
+
+
+var params = {
+        hostname: '192.168.1.156'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,auth: 'fpap:1234'
+    };
+
+wrapper.getAllCurrentReleaseSprints(params, function(err, result){
+    sys.puts("API Get All Current Release Sprints");
+    console.log("RESPUESTA "+result);
+});*/
+
+
+var params = {
+        hostname: '192.168.1.156'
+        ,port: 48080
+        ,path: 'icescrum'
+        ,project: 'TESTAPI'
+        ,story: 951
+        ,auth: 'fpap:1234'
+        ,rank: 1
+    };
+
+wrapper.updateStoryRank(params, function(err, result){
+    sys.puts("API Updates the priority of a story");
     console.log("RESPUESTA "+result);
 });
