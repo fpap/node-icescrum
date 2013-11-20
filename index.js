@@ -1,6 +1,10 @@
 
 var http = require("http");
 
+function sanitize(text){
+    return "'" + text.replace("'", "\\'") + "'";
+}
+
 var icescrum = {};
 
 /* Story API */
@@ -277,8 +281,8 @@ icescrum.updateStory = function(params, callback) {
     // Optional params
     var name = "";
     if (typeof params.name !== 'undefined' && params.name !== null)
-        name = "'name': "+params.name+",";
-    
+        name = "'name': "+sanitize(params.name)+",";
+
     var type = "";
     if (typeof params.type !== 'undefined' && params.type !== null) {
         if (params.type !== parseInt(params.type, 10)){
@@ -297,23 +301,23 @@ icescrum.updateStory = function(params, callback) {
     
     var description = "";
     if (typeof params.description !== 'undefined' && params.description !== null)
-        description = "description: "+params.description+",";
+        description = "description: "+sanitize(params.description)+",";
     
     var notes = "";
     if (typeof params.notes !== 'undefined' && params.notes !== null)
-        notes = "notes: "+params.notes+",";
+        notes = "notes: "+sanitize(params.notes)+",";
     
     var textAs = "";
     if (typeof params.textAs !== 'undefined' && params.textAs !== null)
-        textAs = "textAs: "+params.textAs+",";
+        textAs = "textAs: "+sanitize(params.textAs)+",";
     
     var textICan = "";
     if (typeof params.textICan !== 'undefined' && params.textICan !== null)
-        textICan = "textICan: "+params.textICan+",";
+        textICan = "textICan: "+sanitize(params.textICan)+",";
     
     var textTo = "";
     if (typeof params.textTo !== 'undefined' && params.textTo !== null)
-        textTo = "textTo: "+params.textTo+",";
+        textTo = "textTo: "+sanitize(params.textTo)+",";
     
     var featureId = "";
     if (typeof params.featureId !== 'undefined' && params.featureId !== null) {
@@ -717,7 +721,7 @@ icescrum.createStory = function(params, callback) {
     
     var name = "";
     if (typeof params.name !== 'undefined' && params.name !== null)
-        name = "'name': "+params.name+",";
+        name = "'name': "+sanitize(params.name)+",";
     else {
         callback(true, 'Undefined name');
         return(this);
@@ -742,23 +746,23 @@ icescrum.createStory = function(params, callback) {
     
     var description = "";
     if (typeof params.description !== 'undefined' && params.description !== null)
-        description = "description: "+params.description+",";
+        description = "description: "+sanitize(params.description)+",";
     
     var notes = "";
     if (typeof params.notes !== 'undefined' && params.notes !== null)
-        notes = "notes: "+params.notes+",";
+        notes = "notes: "+sanitize(params.notes)+",";
     
     var textAs = "";
     if (typeof params.textAs !== 'undefined' && params.textAs !== null)
-        textAs = "textAs: "+params.textAs+",";
+        textAs = "textAs: "+sanitize(params.textAs)+",";
     
     var textICan = "";
     if (typeof params.textICan !== 'undefined' && params.textICan !== null)
-        textICan = "textICan: "+params.textICan+",";
+        textICan = "textICan: "+sanitize(params.textICan)+",";
     
     var textTo = "";
     if (typeof params.textTo !== 'undefined' && params.textTo !== null)
-        textTo = "textTo: "+params.textTo+",";
+        textTo = "textTo: "+sanitize(params.textTo)+",";
     
     var featureId = "";
     if (typeof params.featureId !== 'undefined' && params.featureId !== null) {
