@@ -59,13 +59,11 @@ var icescrum = {};
  */
 icescrum.getStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -83,17 +81,18 @@ icescrum.getStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -162,7 +161,7 @@ icescrum.getAllStories = function(params, callback) {
     options.headers = {
             'content-type': 'application/json'
     };
-
+    
     var req = http.request(options, function(result) {
         var responseParts = [];
         var error = false;
@@ -193,12 +192,15 @@ icescrum.getAllStories = function(params, callback) {
         
         result.on("end", function(){
             if (!error) {
-                callback(false, responseParts.join(""));
+                return callback(null, responseParts.join(""));
             } else {
-                callback(true, errorMsg);
+                return callback(errorMsg);
             }
-            return(this);
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -268,13 +270,11 @@ icescrum.getAllStories = function(params, callback) {
  */
 icescrum.updateStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)){
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0){
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -286,13 +286,11 @@ icescrum.updateStory = function(params, callback) {
     var type = "";
     if (typeof params.type !== 'undefined' && params.type !== null) {
         if (params.type !== parseInt(params.type, 10)){
-            callback(true, 'Undefined type');
-            return(this);
+            return callback('Undefined type');
         }
         else {
             if (!(params.type === 0 || params.type == 2 || params.type == 3)){
-                callback(true, 'Invalid type');
-                return(this);
+                return callback('Invalid type');
             }
         }
         
@@ -322,13 +320,11 @@ icescrum.updateStory = function(params, callback) {
     var featureId = "";
     if (typeof params.featureId !== 'undefined' && params.featureId !== null) {
         if (params.featureId !== parseInt(params.featureId, 10)){
-            callback(true, 'Undefined feature');
-            return(this);
+            return callback('Undefined feature');
         }
         else {
             if (params.featureId < 0){
-                callback(true, 'Invalid feature');
-                return(this);
+                return callback('Invalid feature');
             }
         }
         
@@ -338,13 +334,11 @@ icescrum.updateStory = function(params, callback) {
     var sprintId = "";
     if (typeof params.sprintId !== 'undefined' && params.sprintId !== null) {
         if (params.sprintId !== parseInt(params.sprintId, 10)){
-            callback(true, 'Undefined sprint');
-            return(this);
+            return callback('Undefined sprint');
         }
         else {
             if (params.sprintId < 0){
-                callback(true, 'Invalid sprint');
-                return(this);
+                return callback('Invalid sprint');
             }
         }
         
@@ -354,13 +348,11 @@ icescrum.updateStory = function(params, callback) {
     var rank = "";
     if (typeof params.rank !== 'undefined' && params.rank !== null) {
         if (params.rank !== parseInt(params.rank, 10)){
-            callback(true, 'Undefined rank');
-            return(this);
+            return callback('Undefined rank');
         }
         else {
             if (params.rank < 0){
-                callback(true, 'Invalid rank');
-                return(this);
+                return callback('Invalid rank');
             }
         }
         
@@ -370,13 +362,11 @@ icescrum.updateStory = function(params, callback) {
     var effort = "";
     if (typeof params.effort !== 'undefined' && params.effort !== null) {
         if (params.effort !== parseInt(params.effort, 10)){
-            callback(true, 'Undefined effort');
-            return(this);
+            return callback('Undefined effort');
         }
         else {
             if (params.effort < 0){
-                callback(true, 'Invalid effort');
-                return(this);
+                return callback('Invalid effort');
             }
         }
         
@@ -386,13 +376,11 @@ icescrum.updateStory = function(params, callback) {
     var dependsOnId = "";
     if (typeof params.dependsOnId !== 'undefined' && params.dependsOnId !== null) {
         if (params.dependsOnId !== parseInt(params.dependsOnId, 10)){
-            callback(true, 'Undefined depends on');
-            return(this);
+            return callback('Undefined depends on');
         }
         else {
             if (params.dependsOnId < 0){
-                callback(true, 'Invalid depends on');
-                return(this);
+                return callback('Invalid depends on');
             }
         }
         
@@ -421,20 +409,22 @@ icescrum.updateStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
   
     req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -491,13 +481,11 @@ icescrum.updateStory = function(params, callback) {
  */
 icescrum.acceptStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -506,13 +494,11 @@ icescrum.acceptStory = function(params, callback) {
         if (params.type == 'feature' || params.type == 'story' || params.type == 'task')
             type = "'type': "+params.type;
         else {
-            callback(true, 'Invalid type');
-            return(this);
+            return callback('Invalid type');
         }
     }
     else {
-        callback(true, 'Undefined type');
-        return(this);
+        return callback('Undefined type');
     }
     
     var data = "{"+type+"}"
@@ -532,20 +518,22 @@ icescrum.acceptStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
 
     req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -603,24 +591,20 @@ icescrum.acceptStory = function(params, callback) {
  */
 icescrum.updateStoryRank = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
     if (params.rank !== parseInt(params.rank, 10)) {
-        callback(true, 'Undefined rank');
-        return(this);
+        return callback('Undefined rank');
     }
     else {
         if (params.rank < 1) {
-            callback(true, 'Invalid rank');
-            return(this);
+            return callback('Invalid rank');
         }
     }
     
@@ -641,20 +625,22 @@ icescrum.updateStoryRank = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
 
     req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -723,21 +709,18 @@ icescrum.createStory = function(params, callback) {
     if (typeof params.name !== 'undefined' && params.name !== null)
         name = "'name': "+sanitize(params.name)+",";
     else {
-        callback(true, 'Undefined name');
-        return(this);
+        return callback('Undefined name');
     }
     
     // Optional params    
     var type = "";
     if (typeof params.type !== 'undefined' && params.type !== null) {
         if (params.type !== parseInt(params.type, 10)){
-            callback(true, 'Undefined type');
-            return(this);
+            return callback('Undefined type');
         }
         else {
             if (!(params.type === 0 || params.type == 2 || params.type == 3)){
-                callback(true, 'Invalid type');
-                return(this);
+                return callback('Invalid type');
             }
         }
         
@@ -767,13 +750,11 @@ icescrum.createStory = function(params, callback) {
     var featureId = "";
     if (typeof params.featureId !== 'undefined' && params.featureId !== null) {
         if (params.featureId !== parseInt(params.featureId, 10)){
-            callback(true, 'Undefined feature');
-            return(this);
+            return callback('Undefined feature');
         }
         else {
             if (params.featureId < 0){
-                callback(true, 'Invalid feature');
-                return(this);
+                return callback('Invalid feature');
             }
         }
         
@@ -783,13 +764,11 @@ icescrum.createStory = function(params, callback) {
     var dependsOnId = "";
     if (typeof params.dependsOnId !== 'undefined' && params.dependsOnId !== null) {
         if (params.dependsOnId !== parseInt(params.dependsOnId, 10)){
-            callback(true, 'Undefined depends on');
-            return(this);
+            return callback('Undefined depends on');
         }
         else {
             if (params.dependsOnId < 0){
-                callback(true, 'Invalid depends on');
-                return(this);
+                return callback('Invalid depends on');
             }
         }
         
@@ -817,20 +796,22 @@ icescrum.createStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
   
     req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -886,13 +867,11 @@ icescrum.createStory = function(params, callback) {
  */
 icescrum.setStoryDone = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -911,17 +890,18 @@ icescrum.setStoryDone = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -979,13 +959,11 @@ icescrum.setStoryDone = function(params, callback) {
  */
 icescrum.setStoryUndone = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -1004,17 +982,18 @@ icescrum.setStoryUndone = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -1074,25 +1053,21 @@ icescrum.setStoryUndone = function(params, callback) {
  */
 icescrum.planStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
     var sprintId = "";
     if (params.sprintId !== parseInt(params.sprintId, 10)) {
-        callback(true, 'Undefined sprint');
-        return(this);
+        return callback('Undefined sprint');
     }
     else {
         if (params.sprintId < 0) {
-            callback(true, 'Invalid sprint');
-            return(this);
+            return callback('Invalid sprint');
         }
         else sprintId = "id: "+params.sprintId;
     }
@@ -1114,20 +1089,22 @@ icescrum.planStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
 
     req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -1185,21 +1162,18 @@ icescrum.planStory = function(params, callback) {
  */
 icescrum.unplanStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
     var shiftToNext = false;
     if (typeof params.shiftToNext !== 'undefined' && params.shiftToNext !== null) {
         if (params.shiftToNext !== true && params.shiftToNext !== false){
-            callback(true, 'Invalid shiftToNext');
-            return(this);
+            return callback('Invalid shiftToNext');
         }
     }
     
@@ -1231,21 +1205,23 @@ icescrum.unplanStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
 
     if (shiftToNext)
         req.write(data, 'utf8');
+
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -1268,13 +1244,11 @@ icescrum.unplanStory = function(params, callback) {
  */
 icescrum.deleteStory = function(params, callback) {
     if (params.story !== parseInt(params.story, 10)) {
-        callback(true, 'Undefined story');
-        return(this);
+        return callback('Undefined story');
     }
     else {
         if (params.story < 0) {
-            callback(true, 'Invalid story');
-            return(this);
+            return callback('Invalid story');
         }
     }
     
@@ -1293,17 +1267,18 @@ icescrum.deleteStory = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else { //TODO: When deletes the story successfully, it does not return the id
-                callback(false, params.story);
-                return(this);
+                return callback(null, params.story);
             }
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -1331,13 +1306,11 @@ icescrum.deleteStory = function(params, callback) {
 */
 icescrum.getFeature = function(params, callback) {
     if (params.story.feature.id !== parseInt(params.story.feature.id, 10)) {
-        callback(true, 'Undefined feature');
-        return(this);
+        return callback('Undefined feature');
     }
     else {
         if (params.story.feature.id < 0) {
-            callback(true, 'Invalid feature');
-            return(this);
+            return callback('Invalid feature');
         }
     }
    
@@ -1356,19 +1329,20 @@ icescrum.getFeature = function(params, callback) {
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                callback(true, chunk.substr(11,chunk.length - 14));
-                return(this);
+                return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
-                callback(true, chunk.substr(10,chunk.length - 12));
-                return(this);
+                return callback(chunk.substr(10,chunk.length - 12));
             }
             else {
-                callback(false, chunk);
-                return(this);
+                return callback(null, chunk);
             }
         });
     });
  
+    req.on("error", function(err){
+        return callback(err);
+    });
+  
     req.end();
 };
 
@@ -1455,12 +1429,15 @@ icescrum.getAllFeatures = function(params, callback) {
         
         result.on("end", function(){
             if (!error) {
-                callback(false, responseParts.join(""));
+                return callback(null, responseParts.join(""));
             } else {
-                callback(true, errorMsg);
+                return callback(errorMsg);
             }
-            return(this);
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();
@@ -1571,12 +1548,15 @@ icescrum.getAllCurrentReleaseSprints = function(params, callback) {
         
         result.on("end", function(){
             if (!error) {
-                callback(false, responseParts.join(""));
+                return callback(null, responseParts.join(""));
             } else {
-                callback(true, errorMsg);
+                return callback(errorMsg);
             }
-            return(this);
         });
+    });
+  
+    req.on("error", function(err){
+        return callback(err);
     });
   
     req.end();

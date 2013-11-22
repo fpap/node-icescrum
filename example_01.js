@@ -17,7 +17,7 @@ var params = {
 wrapper.getStory(params, function(err, result){
 	sys.puts("API Get a story");
 	console.log("RESPUESTA "+result);
-});
+});*/
 
 
 
@@ -34,7 +34,7 @@ wrapper.getAllStories(params, function(err, result){
     console.log("RESPUESTA "+result);
 });
 
-
+/*
 
 var params = {
         hostname: '192.168.1.156'
@@ -226,7 +226,7 @@ wrapper.getAllCurrentReleaseSprints(params, function(err, result){
     console.log("RESPUESTA "+result);
 });*/
 
-
+/*
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
@@ -240,4 +240,4 @@ var params = {
 wrapper.updateStoryRank(params, function(err, result){
     sys.puts("API Updates the priority of a story");
     console.log("RESPUESTA "+result);
-});
+});*/
