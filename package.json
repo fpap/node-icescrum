@@ -1,6 +1,6 @@
 {
   "name": "icescrum",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "iceScrum API wrapper",
   "main": "index.js",
   "scripts": {

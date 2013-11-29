@@ -85,6 +85,9 @@ icescrum.getStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -178,7 +181,7 @@ icescrum.getAllStories = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html>") {
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
@@ -413,6 +416,9 @@ icescrum.updateStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -522,6 +528,9 @@ icescrum.acceptStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -628,6 +637,9 @@ icescrum.updateStoryRank = function(params, callback) {
                 return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
+            }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
             }
             else {
                 return callback(null, chunk);
@@ -800,6 +812,9 @@ icescrum.createStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -894,6 +909,9 @@ icescrum.setStoryDone = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -985,6 +1003,9 @@ icescrum.setStoryUndone = function(params, callback) {
                 return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
+            }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
             }
             else {
                 return callback(null, chunk);
@@ -1092,6 +1113,9 @@ icescrum.planStory = function(params, callback) {
                 return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
+            }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
             }
             else {
                 return callback(null, chunk);
@@ -1209,6 +1233,9 @@ icescrum.unplanStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else {
                 return callback(null, chunk);
             }
@@ -1271,6 +1298,9 @@ icescrum.deleteStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
+            }
             else { //TODO: When deletes the story successfully, it does not return the id
                 return callback(null, params.story);
             }
@@ -1332,6 +1362,9 @@ icescrum.getFeature = function(params, callback) {
                 return callback(chunk.substr(11,chunk.length - 14));
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
+            }
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+                return callback(chunk);
             }
             else {
                 return callback(null, chunk);
@@ -1415,7 +1448,7 @@ icescrum.getAllFeatures = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html>") {
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
@@ -1534,7 +1567,7 @@ icescrum.getAllCurrentReleaseSprints = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html>") {
+            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
