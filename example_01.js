@@ -20,7 +20,7 @@ wrapper.getStory(params, function(err, result){
 });*/
 
 
-
+/*
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
@@ -33,7 +33,7 @@ wrapper.getAllStories(params, function(err, result){
     sys.puts("API Get all stories");
     console.log("RESPUESTA "+result);
 });
-
+*/
 /*
 
 var params = {
@@ -183,11 +183,11 @@ wrapper.deleteStory(params, function(err, result){
     console.log("RESPUESTA "+result);
 }); */
 
-/*
+
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
-        ,path: 'icescrum'
+        ,path: 'icescrumasd'
         ,project: 'TESTAPI'
         ,feature: 91
         ,auth: 'fpap:1234'
@@ -195,10 +195,12 @@ var params = {
 
 wrapper.getFeature(params, function(err, result){
     sys.puts("API Get a feature.");
-    console.log("RESPUESTA "+result);
+    if (!err)
+        console.log("RESPUESTA "+result);
+    else console.log("RESPUESTA con error: "+err);
 });
 
-
+/*
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080

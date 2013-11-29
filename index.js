@@ -1335,11 +1335,11 @@ icescrum.deleteStory = function(params, callback) {
 *     If first value == false, get feature's id.
 */
 icescrum.getFeature = function(params, callback) {
-    if (params.story.feature.id !== parseInt(params.story.feature.id, 10)) {
+    if (params.feature !== parseInt(params.feature, 10)) {
         return callback('Undefined feature');
     }
     else {
-        if (params.story.feature.id < 0) {
+        if (params.feature.id < 0) {
             return callback('Invalid feature');
         }
     }
@@ -1348,7 +1348,7 @@ icescrum.getFeature = function(params, callback) {
     console.log("Parametros recibidos: \n"+params);
     options.hostname = params.hostname;
     options.port = params.port;
-    options.path = '/'+params.path+'/ws/p/'+params.project+'/feature/'+params.story.feature.id;
+    options.path = '/'+params.path+'/ws/p/'+params.project+'/feature/'+params.feature;
     options.auth = params.auth;
     options.method = 'GET';
     options.headers = {
