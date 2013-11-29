@@ -85,7 +85,7 @@ icescrum.getStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -181,7 +181,7 @@ icescrum.getAllStories = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
@@ -416,7 +416,7 @@ icescrum.updateStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -528,7 +528,7 @@ icescrum.acceptStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -638,7 +638,7 @@ icescrum.updateStoryRank = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -812,7 +812,7 @@ icescrum.createStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -909,7 +909,7 @@ icescrum.setStoryDone = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -1004,7 +1004,7 @@ icescrum.setStoryUndone = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -1114,7 +1114,7 @@ icescrum.planStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -1233,7 +1233,7 @@ icescrum.unplanStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -1298,7 +1298,7 @@ icescrum.deleteStory = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else { //TODO: When deletes the story successfully, it does not return the id
@@ -1363,7 +1363,7 @@ icescrum.getFeature = function(params, callback) {
             } else if (chunk.substr(2,5) == "error") {
                 return callback(chunk.substr(10,chunk.length - 12));
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 return callback(chunk);
             }
             else {
@@ -1448,7 +1448,7 @@ icescrum.getAllFeatures = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
@@ -1567,7 +1567,7 @@ icescrum.getAllCurrentReleaseSprints = function(params, callback) {
                 error = true;
                 errorMsg = chunk.substr(10,chunk.length - 12);
             }
-            else if (chunk.substr(0,15) == "<!DOCTYPE html") {
+            else if (chunk.substr(0,14) == "<!DOCTYPE html") {
                 error = true;
                 errorMsg = chunk;
                 //callback(true, chunk);
