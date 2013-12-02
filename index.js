@@ -1345,7 +1345,6 @@ icescrum.getFeature = function(params, callback) {
     }
    
     var options = {};
-    console.log("Parametros recibidos: \n"+params);
     options.hostname = params.hostname;
     options.port = params.port;
     options.path = '/'+params.path+'/ws/p/'+params.project+'/feature/'+params.feature;
