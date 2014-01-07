@@ -2,8 +2,8 @@
 var http = require("http");
 
 function sanitize(text){
-    var sanitizedText = text.replace("'", "\\'");
-    sanitizedText = sanitizedText.replace("\n", "\\n");
+    var sanitizedText = text.replace(/'/g, "\\'");
+    sanitizedText = sanitizedText.replace(/\n/g, "\\n");
     return "'" + sanitizedText + "'";
 }
 
