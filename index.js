@@ -2,7 +2,9 @@
 var http = require("http");
 
 function sanitize(text){
-    return "'" + text.replace("'", "\\'") + "'";
+    var sanitizedText = text.replace("'", "\\'");
+    sanitizedText = sanitizedText.replace("\n", "\\n");
+    return "'" + sanitizedText + "'";
 }
 
 var icescrum = {};
