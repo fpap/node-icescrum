@@ -5,19 +5,22 @@
 var sys = require("sys")
     ,wrapper = require('./index');
 
-/*
+
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
         ,path: 'icescrum'
         ,project: 'TESTAPI'
         ,story: 750
+        ,auth: 'fpap:1234'
     };
 
 wrapper.getStory(params, function(err, result){
 	sys.puts("API Get a story");
-	console.log("RESPUESTA "+result);
-});*/
+	if (!err)
+	    console.log("RESPUESTA "+result);
+	else console.log("ERROR "+err);
+});
 
 
 /*
@@ -32,8 +35,8 @@ var params = {
 wrapper.getAllStories(params, function(err, result){
     sys.puts("API Get all stories");
     console.log("RESPUESTA "+result);
-});
-*/
+});*/
+
 /*
 
 var params = {
@@ -183,7 +186,7 @@ wrapper.deleteStory(params, function(err, result){
     console.log("RESPUESTA "+result);
 }); */
 
-
+/*
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
@@ -199,7 +202,7 @@ wrapper.getFeature(params, function(err, result){
         console.log("RESPUESTA "+result);
     else console.log("RESPUESTA con error: "+err);
 });
-
+*/
 /*
 var params = {
         hostname: '192.168.1.156'

@@ -73,6 +73,7 @@ icescrum.getStory = function(params, callback) {
     options.port = params.port;
     options.path = '/'+params.path+'/ws/p/'+params.project+'/story/'+params.story;
     options.method = 'GET';
+    options.auth = params.auth;
     options.headers = {
             'content-type': 'application/json'
     };
