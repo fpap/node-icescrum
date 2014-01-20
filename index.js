@@ -81,18 +81,38 @@ icescrum.getStory = function(params, callback) {
     };
 
     var req = http.request(options, function(result) {
+        var responseParts = [];
+        var error = false;
+        var errorMsg = "";
         result.setEncoding('utf8');
         result.on('data', function (chunk) {
             if (chunk.substr(3,5) == "error") {
-                return callback(chunk.substr(11,chunk.length - 14));
-            } else if (chunk.substr(2,5) == "error") {
-                return callback(chunk.substr(10,chunk.length - 12));
+                error = true;
+                errorMsg = chunk.substr(11,chunk.length - 14);
+                //callback(true, chunk.substr(10,chunk.length - 12));
+                //return(this);
+            }
+            else if (chunk.substr(2,5) == "error") {
+                error = true;
+                errorMsg = chunk.substr(10,chunk.length - 12);
             }
             else if (chunk.substr(0,14) == "<!DOCTYPE html") {
-                return callback(chunk);
+                error = true;
+                errorMsg = chunk;
+                //callback(true, chunk);
+                //return(this);
             }
             else {
-                return callback(null, chunk);
+                if (!error)
+                    responseParts.push(chunk);
+            }
+        });
+        
+        result.on("end", function(){
+            if (!error) {
+                return callback(null, responseParts.join(""));
+            } else {
+                return callback(errorMsg);
             }
         });
     });

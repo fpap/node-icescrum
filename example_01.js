@@ -5,7 +5,7 @@
 var sys = require("sys")
     ,wrapper = require('./index');
 
-
+/*
 var params = {
         hostname: '192.168.1.156'
         ,port: 48080
@@ -20,22 +20,23 @@ wrapper.getStory(params, function(err, result){
 	if (!err)
 	    console.log("RESPUESTA "+result);
 	else console.log("ERROR "+err);
-});
+});*/
 
 
-/*
+
 var params = {
-        hostname: '192.168.1.156'
+        hostname: 's-soft.com.ar'
         ,port: 48080
         ,path: 'icescrum'
-        ,project: 'TESTAPI'
-        ,auth: 'fpap:1234'
+        ,project: 'TA'
+        ,auth: 'rgago:123456'
+        //,auth: 'fpap:1234'
     };
 
 wrapper.getAllStories(params, function(err, result){
     sys.puts("API Get all stories");
     console.log("RESPUESTA "+result);
-});*/
+});
 
 /*
 
